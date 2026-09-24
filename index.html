@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社戏雅韵·伶影流芳 | 面小伶作品集</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", SimSun, serif;
+        }
+        body {
+            background-color: #f8f2e4;
+            color: #443322;
+            line-height: 1.7;
+        }
+        nav {
+            background-color: rgba(144, 108, 72, 0.9);
+            padding: 1rem 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+        nav a {
+            color: #fff8e8;
+            text-decoration: none;
+            margin: 0 18px;
+            font-size: 18px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        section {
+            display: none;
+            max-width: 1160px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        section.active {
+            display: block;
+        }
+        .hero {
+            text-align: center;
+            padding: 70px 20px;
+        }
+        .hero h1 {
+            font-size: 44px;
+            color: #7c4f2c;
+            margin-bottom:14px;
+        }
+        .hero p {
+            font-size: 19px;
+            color:#664b34;
+        }
+        .gallery {
+            display: grid;
+            gap:34px;
+            margin-top:32px;
+        }
+        .gallery-item img {
+            width:100%;
+            border-radius:10px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(100,70,40,0.2);
+            transition: 0.28s ease;
+        }
+        .gallery-item img:hover {
+            transform: translateY(-5px);
+        }
+        .desc-text {
+            background: rgba(255,252,245,0.8);
+            padding:36px;
+            border-radius:12px;
+            box-shadow: 0 2px 12px rgba(120,85,50,0.12);
+            font-size:17px;
+        }
+        h2 {
+            text-align:center;
+            font-size:29px;
+            color:#7c4f2c;
+            margin:22px 0;
+        }
+        /* 图片放大弹窗 */
+        .modal {
+            position: fixed;
+            top:0;left:0;
+            width:100%;height:100%;
+            background: rgba(0,0,0,0.87);
+            display:none;
+            z-index:1000;
+            align-items:center;
+            justify-content:center;
+            padding:24px;
+        }
+        .modal img {
+            max-width:93%;
+            max-height:93vh;
+            border-radius:8px;
+        }
+        .modal.show {
+            display:flex;
+        }
+        .close-btn {
+            position:absolute;
+            top:24px;
+            right:34px;
+            color:#fff;
+            font-size:40px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航 -->
+    <nav>
+        <a href="#home" onclick="switchPage('home')">首页</a>
+        <a href="#works" onclick="switchPage('works')">作品展示</a>
+        <a href="#statement" onclick="switchPage('statement')">创作说明</a>
+    </nav>
+
+    <!-- 首页 -->
+    <section id="home" class="active">
+        <div class="hero">
+            <h1>社戏雅韵·伶影流芳</h1>
+            <p>绍兴社戏非遗IP「面小伶」｜作品集展示</p>
+            <p style="margin-top:24px;">杭州师范大学 · 美术学院</p>
+        </div>
+    </section>
+
+    <!-- 作品展示 -->
+    <section id="works">
+        <h2>作品展板</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="board1.jpg" alt="IP形象信息展板" onclick="openModal(this.src)">
+            </div>
+            <div class="gallery-item">
+                <img src="board2.jpg" alt="文创延展应用展板" onclick="openModal(this.src)">
+            </div>
+            <div class="gallery-item">
+                <img src="board3.jpg" alt="海报漫画物料展板" onclick="openModal(this.src)">
+            </div>
+        </div>
+    </section>
+
+    <!-- 创作说明 -->
+    <section id="statement">
+        <h2>创作说明</h2>
+        <div class="desc-text">
+            <p>《社戏雅韵·伶影流芳》是围绕绍兴社戏打造的非遗原创IP设计，IP名为“面小伶”。设计提取木雕脸谱、乌篷船、越剧花旦服饰纹样等越地文化元素，采用黏土盲盒的Q版国风风格，塑造非遗传播少女形象。</p>
+            <br>
+            <p>整套作品包含IP信息档案、人物三视图、表情包、系列动作延展、叙事漫画、主题海报，同时延展开发书签、徽章、手提袋、日用包装等文创物料。作品以可持续社会化设计为思路，将传统社戏民俗转化为年轻人喜爱的视觉内容与日常文创产品。</p>
+            <br>
+            <p>本设计借助IP叙事传递江南社戏的民俗文化内涵，以轻量化、生活化的文创载体活化非遗，探索传统民俗当代社会化传播的新路径，让古老的社戏文化融入当代青年生活，持续焕发新生。</p>
+        </div>
+    </section>
+
+    <!-- 图片弹窗 -->
+    <div class="modal" id="imgModal">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <img id="modalImg" src="" alt="大图预览">
+    </div>
+
+<script>
+    // 页面切换
+    function switchPage(id) {
+        document.querySelectorAll('section').forEach(item => item.classList.remove('active'))
+        document.getElementById(id).classList.add('active')
+    }
+    // 打开放大弹窗
+    function openModal(src){
+        document.getElementById('modalImg').src = src
+        document.getElementById('imgModal').classList.add('show')
+        document.body.style.overflow = 'hidden'
+    }
+    // 关闭弹窗
+    function closeModal(){
+        document.getElementById('imgModal').classList.remove('show')
+        document.body.style.overflow = 'auto'
+    }
+    // 点击遮罩关闭弹窗
+    document.getElementById('imgModal').addEventListener('click',function(e){
+        if(e.target === this) closeModal()
+    })
+</script>
+</body>
+</html>
